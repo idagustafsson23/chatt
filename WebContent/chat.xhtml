@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<h:outputStylesheet name="grid/grid.css" library="primefaces" />
+	<title>Login</title>
+</h:head>
+<h:body>
+	<div class="ui-g">
+		<div class="ui-g-8 ui-g-nopad">
+			<div class="ui-g-12" style="background-color: green">
+				<h:form>
+					<p:dataList id="msgList" value="#{chatBean.messages}" var="msg">
+					#{msg}
+					
+				</p:dataList>
+					<p:poll interval="3" listener="#{chatBean.updateMessages}" update="msgList"></p:poll>
+				</h:form>
+			</div>
+			<div class="ui-g-12" style="background-color: blue">
+				<h:form>
+					<p:inputTextarea id="inputMessage" rows="1" cols="100"
+						value="#{chatBean.message}" required="true" counter="display"
+						maxlength="150" counterTemplate="{0} characters remaining."
+						autoResize="false" />
+					<h:outputText id="display" />
+					<p:commandButton action="#{chatBean.sendMessage}" value="Send" />
+				</h:form>
+				<!-- TODO: fixa counter-->
+			</div>
+		</div>
+		<div class="ui-g-4">
+			4
+			<!-- lista av medlemmar -->
+
+		</div>
+	</div>
+
+</h:body>
+</html>
