@@ -17,8 +17,8 @@ public class UserDAOBean {
 		entityManager.flush();
 	}
 
-	public User getUserByUserNamePassword(String userName, String password) {
-		return entityManager.createNamedQuery("User.findByUsernameAndPassword", User.class)
-				.setParameter("userName", userName).setParameter("password", password).getSingleResult();
+	public User getUserByUserName(String userName) {
+		return entityManager.createNamedQuery("User.findByUsername", User.class)
+				.setParameter("userName", userName).getSingleResult();
 	}
 }

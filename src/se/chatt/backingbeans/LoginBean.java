@@ -1,5 +1,6 @@
 package se.chatt.backingbeans;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
@@ -8,14 +9,37 @@ import com.yubico.client.v2.YubicoClient;
 import com.yubico.client.v2.exceptions.YubicoValidationFailure;
 import com.yubico.client.v2.exceptions.YubicoVerificationException;
 
+import se.chatt.DAO.User;
+import se.chatt.EJB.interfaces.UserEJBLocal;
+import se.chatt.hashing.PasswordHashing;
+
 
 @Named(value="loginBean")
 @RequestScoped
 public class LoginBean {
+	
+	@EJB
+	private UserEJBLocal userEJB;
+	
 	private String textField;
+	private String userName;
+	private String password;
 	
 	public String login() {
-		YubicoClient client = YubicoClient.getClient(30750, "OpEjOSsfeX7l1fg9hdJKViWL6xo=");
+		User userFromDB =  userEJB.getUserByUserName(userName);
+		
+		if(userFromDB != null){
+			
+			
+			if(PasswordHashing.validatePassword(password, userFromDB.getPassword())){
+				
+			}
+			
+			
+		}
+		
+		
+		/*YubicoClient client = YubicoClient.getClient(30750, "OpEjOSsfeX7l1fg9hdJKViWL6xo=");
 
 		VerificationResponse response;
 		try {
@@ -26,10 +50,10 @@ public class LoginBean {
 				System.out.println("BLÄÄÄÄÄ");
 			}
 		} catch (YubicoVerificationException | YubicoValidationFailure e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
+			
 		
 		return "";
 	}

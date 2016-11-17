@@ -8,5 +8,5 @@ import se.chatt.DAO.User;
 public interface UserEJBLocal {
 	
 	public void saveUser(User user);
-	public User getUserByUserNamePassword(String userName, String password);
+	public User getUserByUserName(String userName);
 }

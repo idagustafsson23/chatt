@@ -12,36 +12,25 @@
 </h:head>
 <h:body>
 	<h:form>
-		<p:container layout="fluid">
-					<p:row tooltip-position="left"
-						tooltip="Användarnamn måste innehålla 2-30 tecken.">
-						<p:column span="4">
-							<p:inputText id="userName" label="Användarnamn"
-								value="#{userBean.userName}" required="true"
-								required-message="Du måste ange ett användarnamn!"
-								validator-message="Användarnamn måste vara mellan 2-30 tecken!" autocomplete="off">
-								<f:validateLength minimum="2" maximum="30" />
-							</p:inputText>
-						</p:column>
-					</p:row>
+		<p:outputLabel for="userName" value="username:"></p:outputLabel>
+		<p:inputText id="userName" label="Användarnamn"
+			value="#{userBean.userName}" required="true"
+			required-message="Du måste ange ett användarnamn!"
+			validator-message="Användarnamn måste vara mellan 2-30 tecken!"
+			autocomplete="off">
+			<f:validateLength minimum="2" maximum="30" />
+		</p:inputText>
+		<br />
+		<p:outputLabel for="password" value="password:"></p:outputLabel>
+		<p:inputText id="password" label="Lösenord"
+			value="#{userBean.password}" required="true"
+			required-message="Du måste ange ett lösenord!"
+			validator-message="Lösenord måste vara mellan 2-30 tecken!"
+			autocomplete="off">
+			<f:validateLength minimum="2" maximum="30" />
+		</p:inputText>
 
-					<p:row tooltip-position="left"
-						tooltip="Lösenord måste innehålla 2-30 tecken.">
-						<p:column span="4">
-							<p:inputText id="password" label="Lösenord"
-								value="#{userBean.password}" required="true"
-								required-message="Du måste ange ett lösenord!"
-								validator-message="Lösenord måste vara mellan 2-30 tecken!" autocomplete="off">
-								<f:validateLength minimum="2" maximum="30" />
-							</p:inputText>
-						</p:column>
-					</p:row>
-					</p:container>
-				<p:container>
-				<p:row>
-				<p:commandButton action="#{userBean.addUser()}" value="Spara"></p:commandButton>
-				</p:row>
-				</p:container>
+		<p:commandButton action="#{userBean.addUser()}" value="Spara"></p:commandButton>
 	</h:form>
 </h:body>
 </html>

@@ -20,8 +20,8 @@ public class UserEJB implements UserEJBLocal{
 	}
 
 	@Override
-	public User getUserByUserNamePassword(String userName, String password) {
-		return userDAOBean.getUserByUserNamePassword(userName, password);
+	public User getUserByUserName(String userName) {
+		return userDAOBean.getUserByUserName(userName);
 	}
 
 }

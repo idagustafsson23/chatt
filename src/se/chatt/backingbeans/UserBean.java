@@ -1,11 +1,16 @@
 package se.chatt.backingbeans;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.spec.InvalidKeySpecException;
+
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
 import se.chatt.DAO.User;
 import se.chatt.EJB.interfaces.UserEJBLocal;
+import se.chatt.hashing.PasswordHashing;
 
 @Named(value = "userBean")
 @RequestScoped
@@ -19,10 +24,20 @@ public class UserBean {
 	
 	public String addUser(){
 		user = new User();
-		user.setUserName(userName);
-		user.setPassword(password);
-		userEJB.saveUser(user);
-		
+
+		if(userEJB.getUserByUserName(userName) != null) {
+			//användarnamnet upptaget
+		}else{
+			String hashedPassword;
+			try {
+				hashedPassword = PasswordHashing.generatePasswordHash(password);
+				user.setUserName(userName);
+				user.setPassword(hashedPassword);
+				userEJB.saveUser(user);	
+			} catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException e) {
+				e.printStackTrace();
+			}
+		}
 		return "";
 	}
 	
