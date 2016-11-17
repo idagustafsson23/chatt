@@ -9,7 +9,8 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
-import se.chatt.EJB.remote.MessageEJBRemote;
+import se.chatt.EJB.interfaces.MessageEJBRemote;
+import se.chatt.EJB.interfaces.TestRemote;
 
 /**
  * Message-Driven Bean implementation class for: ChatMDB
@@ -28,7 +29,7 @@ public class ChatMDB implements MessageListener {
      */
 	
 	@EJB
-	private MessageEJBRemote messageEJB;
+	private TestRemote testEJB;
 	
     public ChatMDB() {
         // TODO Auto-generated constructor stub
@@ -40,9 +41,9 @@ public class ChatMDB implements MessageListener {
     public void onMessage(Message message) {
         // TODO Auto-generated method stub
     	try {
-    		messageEJB.addMessage(message.getBody(String.class));
+    		testEJB.addTest(message.getBody(String.class));
 			System.out.println("Mottaget meddelande:" + message.getBody(String.class));
-			System.out.println("mottagit i listan: "+messageEJB.getMessages().get(0));
+			System.out.println("mottagit i listan: "+testEJB.getTest().get(0));
 		} catch (JMSException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

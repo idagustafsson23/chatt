@@ -14,14 +14,15 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import se.chatt.EJB.remote.MessageEJBRemote;
+import se.chatt.EJB.interfaces.MessageEJBRemote;
+import se.chatt.EJB.interfaces.TestRemote;
 
 @Named(value="chatBean")
 @RequestScoped
 public class ChatBean {
 
 	@EJB
-	private MessageEJBRemote messageEJB;
+	private TestRemote testEJB;
 	
 	
 	private List<String> messages;
@@ -58,7 +59,7 @@ public class ChatBean {
 	
 
 	public void updateMessages() {
-		messages = messageEJB.getMessages();
+		messages = testEJB.getTest();
 		
 	}
 

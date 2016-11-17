@@ -6,7 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
 
-import se.chatt.EJB.remote.MessageEJBRemote;
+import se.chatt.EJB.interfaces.MessageEJBRemote;
 
 @Stateful
 public class MessageEJB implements MessageEJBRemote{
