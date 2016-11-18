@@ -1,13 +1,12 @@
 package se.chatt.backingbeans;
 
-import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
+import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
-import com.yubico.client.v2.VerificationResponse;
-import com.yubico.client.v2.YubicoClient;
-import com.yubico.client.v2.exceptions.YubicoValidationFailure;
-import com.yubico.client.v2.exceptions.YubicoVerificationException;
+import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 
 import se.chatt.DAO.User;
 import se.chatt.EJB.interfaces.UserEJBLocal;
@@ -15,9 +14,11 @@ import se.chatt.hashing.PasswordHashing;
 
 
 @Named(value="loginBean")
-@RequestScoped
-public class LoginBean {
-	
+@SessionScoped
+public class LoginBean implements Serializable{
+
+	private static final long serialVersionUID = -3876285026587562903L;
+
 	@EJB
 	private UserEJBLocal userEJB;
 	
@@ -25,17 +26,26 @@ public class LoginBean {
 	private String userName;
 	private String password;
 	
-	public String login() {
+	private User loggedInUser;
+	
+	public String login() throws NoSuchAlgorithmException, InvalidKeySpecException {
 		User userFromDB =  userEJB.getUserByUserName(userName);
 		
 		if(userFromDB != null){
-			
-			
 			if(PasswordHashing.validatePassword(password, userFromDB.getPassword())){
+				//inloggad
 				
+				loggedInUser = userFromDB;
+				System.out.println("Du är inloggad! hurra hurra!" + userFromDB.getUserName());
+				//TODO: Navigate to chat main page;
+			}else{
+				//fel lösenord
+				//TODO: Return message wrong username/password
 			}
 			
-			
+		}else{
+			//fel användarnamn
+			//TODO: Return message wrong username/password
 		}
 		
 		
@@ -58,6 +68,31 @@ public class LoginBean {
 		return "";
 	}
 	
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public User getLoggedInUser() {
+		return loggedInUser;
+	}
+
+	public void setLoggedInUser(User loggedInUser) {
+		this.loggedInUser = loggedInUser;
+	}
+
 	public String getTextField() {
 		return textField;
 	}

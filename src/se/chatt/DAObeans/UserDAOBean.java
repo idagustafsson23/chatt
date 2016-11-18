@@ -18,7 +18,11 @@ public class UserDAOBean {
 	}
 
 	public User getUserByUserName(String userName) {
-		return entityManager.createNamedQuery("User.findByUsername", User.class)
-				.setParameter("userName", userName).getSingleResult();
+		try {
+			return entityManager.createNamedQuery("User.findByUsername", User.class)
+					.setParameter("userName", userName).getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }
