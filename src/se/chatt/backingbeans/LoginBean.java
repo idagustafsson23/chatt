@@ -34,20 +34,14 @@ public class LoginBean implements Serializable{
 		isLoggedIn = false;
 		if(userFromDB != null){
 			if(PasswordHashing.validatePassword(password, userFromDB.getPassword())){
-				//inloggad
 				isLoggedIn = true;
 				loggedInUser = userFromDB;
-				System.out.println("Du är inloggad! hurra hurra!" + userFromDB.getUserName());
 				return "/secured/chat.xhtml?faces-redirect=true";
-				//TODO: Navigate to chat main page;
-			}else{
-				//fel lösenord
-				//TODO: Return message wrong username/password
 			}
 			
-		}else{
-			//fel användarnamn
-			//TODO: Return message wrong username/password
+		}
+		if(!isLoggedIn){
+			//fel lösen eller användarnamn
 		}
 		
 		
