@@ -9,40 +9,86 @@
 
 <h:head>
 	<h:outputStylesheet name="grid/grid.css" library="primefaces" />
-	<title>Chatt</title>
+	<title>Chat</title>
+	
+	<script type="text/javascript" language="javascript">
+	var wsocket;
+	var serviceLocation = "ws://localhost:8080/chatt/chat/";
+	
+	var $nickName;
+	var $message;
+	var $chatWindow;
+	
+	function onMessageReceived(evt) {
+		console.log("msgRecieved");
+		var msg = JSON.parse(evt.data); // native API
+		var $messageLine = $('<tr><td class="received">' + msg.received
+				+ '</td><td class="user label label-info">' + msg.sender
+				+ '</td><td class="message badge">' + msg.message
+				+ '</td></tr>');
+		$chatWindow.append($messageLine);
+	}
+	
+	function sendMessage() {
+		var msg = '{"message":"' + $message.val() + '", "sender":"'
+				+ $nickName.val() + '", "received":""}';
+		wsocket.send(msg);
+		$message.val('').focus();
+	}
+	
+	function sendTest() {
+		console.log("form skickat");
+		sendMessage();
+	}
+	
+	$(document).ready(function() {
+		console.log("document.ready körs iaf...");
+		$nickName = $('#userName');
+		console.log("Användare: " + $nickName.val());
+		$message = $('#message');
+		$chatWindow = $('#response');
+		
+		//från connectToChatServer
+		console.log("ansluten!");
+		wsocket = new WebSocket(serviceLocation);
+		wsocket.onmessage = onMessageReceived;
+		
+	});
+	$('#btnConnect').click(function(){
+		console.log("klick!");
+	});
+	
+	$('#do-chat').submit(function(evt) {
+		console.log("form skickat");
+		evt.preventDefault();
+		sendMessage();
+	});
+	
+	</script>
 </h:head>
 <h:body>
 	<div class="ui-g">
 		<div class="ui-g-8 ui-g-nopad">
 			<div class="ui-g-12" style="background-color: green">
-				<h:form>
-					<p:dataList id="msgList" value="#{chatBean.messages}" var="msg">
-					#{msg}
-					
-				</p:dataList>
-					<p:poll interval="3" listener="#{chatBean.updateMessages}" update="msgList"></p:poll>
-				</h:form>
+				<!-- Chatten! -->
+				<table id="response"></table>
 			</div>
 			<div class="ui-g-12" style="background-color: blue">
-				<h:form>
-					<p:inputTextarea id="inputMessage" rows="1" cols="100"
-						value="#{chatBean.message}" required="true" counter="display"
-						maxlength="150" counterTemplate="{0} characters remaining."
-						autoResize="false" />
-					<h:outputText id="display" />
-					<p:commandButton action="#{chatBean.sendMessage}" value="Send" />
-				</h:form>
-				<!-- TODO: fixa counter-->
+				<div class="controls">
+					<form id="do-chat" onsubmit="return false">
+						
+						<p:inputText id="message" />
+						<button id="btnTest" onclick="sendTest()">hej!</button>
+						<input type="submit" value="Send" />
+					</form>
+				</div>
 			</div>
 		</div>
 		<div class="ui-g-4">
 			<!-- lista av medlemmar -->
-			<p:dataList id="userList" value ="#{chatBean.logins}" var="user">
-				#{user.getUserName}
-			</p:dataList>
-			
 		</div>
 	</div>
+	<h:inputHidden id="userName" value="#{loginBean.loggedInUser.userName}"></h:inputHidden>
 
 </h:body>
 </html>

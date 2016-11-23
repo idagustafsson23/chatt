@@ -34,17 +34,12 @@ public class ChatBean {
 	private List<String> messages;
 	private List<User> members;
 	private String message;
-
 	@PostConstruct
 	private void setup() {
-		logins = (Set<User>) getServletContext().getAttribute("logins");
-		if(logins != null){
-			members = new ArrayList<User>(logins);
-		}else{
-			members = new ArrayList<User>();
-		}
+		
+		
+		
 	}
-
 	public String sendMessage() {
 
 		try {
@@ -67,10 +62,6 @@ public class ChatBean {
 		properties.setProperty("java.naming.factory.url.pkgs", "com.sun.enterprise.naming");
 		properties.setProperty("java.naming.provider.url", "iiop://localhost:3700");
 		return new InitialContext(properties);
-	}
-
-	private ServletContext getServletContext() {
-		return (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 	}
 
 	public void updateMessages() {
