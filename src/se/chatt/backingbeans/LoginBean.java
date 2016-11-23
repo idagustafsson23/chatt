@@ -27,16 +27,18 @@ public class LoginBean implements Serializable{
 	private String password;
 	
 	private User loggedInUser;
+	private boolean isLoggedIn;
 	
 	public String login() throws NoSuchAlgorithmException, InvalidKeySpecException {
 		User userFromDB =  userEJB.getUserByUserName(userName);
-		
+		isLoggedIn = false;
 		if(userFromDB != null){
 			if(PasswordHashing.validatePassword(password, userFromDB.getPassword())){
 				//inloggad
-				
+				isLoggedIn = true;
 				loggedInUser = userFromDB;
 				System.out.println("Du är inloggad! hurra hurra!" + userFromDB.getUserName());
+				return "/secured/chat.xhtml?faces-redirect=true";
 				//TODO: Navigate to chat main page;
 			}else{
 				//fel lösenord
@@ -99,5 +101,13 @@ public class LoginBean implements Serializable{
 	
 	public void setTextField(String textField) {
 		this.textField = textField;
+	}
+
+	public boolean isLoggedIn() {
+		return isLoggedIn;
+	}
+
+	public void setLoggedIn(boolean isLoggedIn) {
+		this.isLoggedIn = isLoggedIn;
 	}
 }
