@@ -36,9 +36,11 @@
 			</div>
 		</div>
 		<div class="ui-g-4">
-			4
 			<!-- lista av medlemmar -->
-
+			<p:dataList id="userList" value ="#{chatBean.logins}" var="user">
+				#{user.getUserName}
+			</p:dataList>
+			
 		</div>
 	</div>
 

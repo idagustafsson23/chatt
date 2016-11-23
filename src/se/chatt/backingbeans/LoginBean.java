@@ -49,6 +49,8 @@ public class LoginBean implements Serializable{
 		}
 		
 		
+		
+		
 		/*YubicoClient client = YubicoClient.getClient(30750, "OpEjOSsfeX7l1fg9hdJKViWL6xo=");
 
 		VerificationResponse response;

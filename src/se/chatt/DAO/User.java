@@ -1,7 +1,15 @@
 package se.chatt.DAO;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
 
 @Entity
 @NamedQueries({
@@ -9,7 +17,7 @@ import javax.persistence.*;
 	@NamedQuery(name="User.findByUsername", query="SELECT u FROM User u WHERE u.userName = :userName"),
 	@NamedQuery(name="User.findById", query="SELECT u FROM User u WHERE u.id = :userId")
 })
-public class User implements Serializable {
+public class User implements Serializable, HttpSessionBindingListener {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -57,5 +65,31 @@ public class User implements Serializable {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
+	@Override
+	public void valueBound(HttpSessionBindingEvent event) {
+		Set<User> logins = (Set<User>) event.getSession().getServletContext().getAttribute("logins");		
+		logins.add(this);
+		
+	}
+
+	@Override
+	public void valueUnbound(HttpSessionBindingEvent event) {
+		 Set<User> logins = (Set<User>) event.getSession().getServletContext().getAttribute("logins");
+	     logins.remove(this);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return super.equals(obj);
+	}
+	
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
+	
 
 }
