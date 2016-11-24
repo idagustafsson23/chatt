@@ -27,6 +27,10 @@ public class User implements Serializable, HttpSessionBindingListener {
 	private int keyId;
 
 	private String password;
+	
+	private String salt;
+	
+	private int iterations;
 
 	@Column(name="user_name")
 	private String userName;
@@ -64,6 +68,22 @@ public class User implements Serializable, HttpSessionBindingListener {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	
+	public void setIterations(int iterations) {
+		this.iterations = iterations;
+	}
+	
+	public int getIterations() {
+		return iterations;
+	}
+	
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+	
+	public String getSalt() {
+		return salt;
 	}
 
 	@Override

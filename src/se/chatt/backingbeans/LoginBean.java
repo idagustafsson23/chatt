@@ -33,7 +33,7 @@ public class LoginBean implements Serializable{
 		User userFromDB =  userEJB.getUserByUserName(userName);
 		isLoggedIn = false;
 		if(userFromDB != null){
-			if(PasswordHashing.validatePassword(password, userFromDB.getPassword())){
+			if(PasswordHashing.validatePassword(password, userFromDB)){
 				isLoggedIn = true;
 				loggedInUser = userFromDB;
 				return "/secured/chat.xhtml?faces-redirect=true";

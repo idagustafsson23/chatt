@@ -9,29 +9,33 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
+import se.chatt.DAO.User;
+
 public class PasswordHashing {
 
-	public static String generatePasswordHash(String password)
+	public static User generatePasswordHash(String password, User user)
 			throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
 		int iterations = 1000;
 		char[] chars = password.toCharArray();
 		byte[] salt = getSalt();
 
 		PBEKeySpec spec = new PBEKeySpec(chars, salt, iterations, 64 * 8);
-		SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+		SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
 		byte[] hash = skf.generateSecret(spec).getEncoded();
-		return iterations + ":" + toHex(salt) + ":" + toHex(hash);
+		user.setIterations(iterations);
+		user.setPassword(toHex(hash));
+		user.setSalt(toHex(salt));
+		return user;
 	}
 
-	public static boolean validatePassword(String originalPassword, String storedPassword)
+	public static boolean validatePassword(String inputPassword, User user)
 			throws NoSuchAlgorithmException, InvalidKeySpecException {
-		String[] parts = storedPassword.split(":");
-		int iterations = Integer.parseInt(parts[0]);
-		byte[] salt = fromHex(parts[1]);
-		byte[] hash = fromHex(parts[2]);
+		int iterations = user.getIterations();
+		byte[] salt = fromHex(user.getSalt());
+		byte[] hash = fromHex(user.getPassword());
 
-		PBEKeySpec spec = new PBEKeySpec(originalPassword.toCharArray(), salt, iterations, hash.length * 8);
-		SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+		PBEKeySpec spec = new PBEKeySpec(inputPassword.toCharArray(), salt, iterations, hash.length * 8);
+		SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
 		byte[] testHash = skf.generateSecret(spec).getEncoded();
 		int diff = hash.length ^ testHash.length;
 		for (int i = 0; i < hash.length && i < testHash.length; i++) {

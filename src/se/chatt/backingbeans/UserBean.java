@@ -28,11 +28,9 @@ public class UserBean {
 		if(userEJB.getUserByUserName(userName) != null) {
 			//användarnamnet upptaget
 		}else{
-			String hashedPassword;
 			try {
-				hashedPassword = PasswordHashing.generatePasswordHash(password);
+				user = PasswordHashing.generatePasswordHash(password, user);
 				user.setUserName(userName);
-				user.setPassword(hashedPassword);
 				userEJB.saveUser(user);	
 			} catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException e) {
 				e.printStackTrace();
