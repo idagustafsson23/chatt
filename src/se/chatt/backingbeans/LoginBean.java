@@ -8,65 +8,68 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import com.yubico.client.v2.VerificationResponse;
+import com.yubico.client.v2.YubicoClient;
+import com.yubico.client.v2.exceptions.YubicoValidationFailure;
+import com.yubico.client.v2.exceptions.YubicoVerificationException;
+
 import se.chatt.DAO.User;
+import se.chatt.DAO.Yubico;
 import se.chatt.EJB.interfaces.UserEJBLocal;
 import se.chatt.hashing.PasswordHashing;
 
-
-@Named(value="loginBean")
+@Named(value = "loginBean")
 @SessionScoped
-public class LoginBean implements Serializable{
+public class LoginBean implements Serializable {
 
 	private static final long serialVersionUID = -3876285026587562903L;
 
 	@EJB
 	private UserEJBLocal userEJB;
-	
-	private String textField;
+
+	private String otp;
 	private String userName;
 	private String password;
-	
+
 	private User loggedInUser;
 	private boolean isLoggedIn;
-	
-	public String login() throws NoSuchAlgorithmException, InvalidKeySpecException {
-		User userFromDB =  userEJB.getUserByUserName(userName);
-		isLoggedIn = false;
-		if(userFromDB != null){
-			if(PasswordHashing.validatePassword(password, userFromDB)){
-				isLoggedIn = true;
-				loggedInUser = userFromDB;
-				return "/secured/chat.xhtml?faces-redirect=true";
-			}
-			
-		}
-		if(!isLoggedIn){
-			//fel lösen eller användarnamn
-		}
-		
-		
-		
-		
-		/*YubicoClient client = YubicoClient.getClient(30750, "OpEjOSsfeX7l1fg9hdJKViWL6xo=");
 
-		VerificationResponse response;
-		try {
-			response = client.verify(textField);
-			if(response.isOk()){
-				System.out.println("FINE");
-			}else{
-				System.out.println("BLÄÄÄÄÄ");
+	public String login() throws NoSuchAlgorithmException, InvalidKeySpecException {
+		User userFromDB = userEJB.getUserByUserName(userName);
+		isLoggedIn = false;
+		if (userFromDB != null) {
+			if (PasswordHashing.validatePassword(password, userFromDB)) {
+				VerificationResponse response;
+				if(userFromDB.getKeyId() != null && YubicoClient.isValidOTPFormat(otp)){
+					try {
+						response = Yubico.getClient().verify(otp);
+						if (response.isOk()) {
+							String yubikeyId = YubicoClient.getPublicId(otp);
+							if (userFromDB.getKeyId().equals(yubikeyId)) {
+								System.out.println("Sussec!!!!!");
+								isLoggedIn = true;
+								
+							}
+						}
+					} catch (YubicoVerificationException | YubicoValidationFailure e) {
+						e.printStackTrace();
+					}
+				}else if(userFromDB.getKeyId() == null){
+					isLoggedIn = true;
+				}
 			}
-		} catch (YubicoVerificationException | YubicoValidationFailure e) {
-			e.printStackTrace();
-		}*/
-		
-			
-		
+
+		}
+		if (!isLoggedIn) {
+			// fel lösen eller användarnamn
+		}else{
+			loggedInUser = userFromDB;
+			return "/secured/chat.xhtml?faces-redirect=true";
+		}
+
 		return "";
 	}
-	
-	
+
 	public String getUserName() {
 		return userName;
 	}
@@ -91,12 +94,12 @@ public class LoginBean implements Serializable{
 		this.loggedInUser = loggedInUser;
 	}
 
-	public String getTextField() {
-		return textField;
+	public String getOtp() {
+		return otp;
 	}
-	
-	public void setTextField(String textField) {
-		this.textField = textField;
+
+	public void setOtp(String otp) {
+		this.otp = otp;
 	}
 
 	public boolean isLoggedIn() {

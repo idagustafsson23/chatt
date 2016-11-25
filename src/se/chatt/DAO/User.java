@@ -1,15 +1,12 @@
 package se.chatt.DAO;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.servlet.http.HttpSessionBindingEvent;
-import javax.servlet.http.HttpSessionBindingListener;
 
 @Entity
 @NamedQueries({
@@ -17,14 +14,14 @@ import javax.servlet.http.HttpSessionBindingListener;
 	@NamedQuery(name="User.findByUsername", query="SELECT u FROM User u WHERE u.userName = :userName"),
 	@NamedQuery(name="User.findById", query="SELECT u FROM User u WHERE u.id = :userId")
 })
-public class User implements Serializable, HttpSessionBindingListener {
+public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private int id;
 
 	@Column(name="key_id")
-	private int keyId;
+	private String keyId;
 
 	private String password;
 	
@@ -46,11 +43,11 @@ public class User implements Serializable, HttpSessionBindingListener {
 		this.id = id;
 	}
 
-	public int getKeyId() {
+	public String getKeyId() {
 		return this.keyId;
 	}
 
-	public void setKeyId(int keyId) {
+	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
 
@@ -85,31 +82,4 @@ public class User implements Serializable, HttpSessionBindingListener {
 	public String getSalt() {
 		return salt;
 	}
-
-	@Override
-	public void valueBound(HttpSessionBindingEvent event) {
-		Set<User> logins = (Set<User>) event.getSession().getServletContext().getAttribute("logins");		
-		logins.add(this);
-		
-	}
-
-	@Override
-	public void valueUnbound(HttpSessionBindingEvent event) {
-		 Set<User> logins = (Set<User>) event.getSession().getServletContext().getAttribute("logins");
-	     logins.remove(this);
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return super.equals(obj);
-	}
-	
-	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
-	}
-	
-
 }

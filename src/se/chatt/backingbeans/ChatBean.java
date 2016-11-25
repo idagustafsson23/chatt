@@ -1,6 +1,5 @@
 package se.chatt.backingbeans;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -8,7 +7,6 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSContext;
@@ -17,7 +15,6 @@ import javax.jms.Topic;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.servlet.ServletContext;
 
 import se.chatt.DAO.User;
 import se.chatt.EJB.interfaces.TestRemote;

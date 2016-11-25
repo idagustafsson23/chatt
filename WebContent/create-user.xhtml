@@ -8,29 +8,37 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-	<title>Skapa</title>
+	<title>Register User</title>
 </h:head>
 <h:body>
 	<h:form>
-		<p:outputLabel for="userName" value="username:"></p:outputLabel>
-		<p:inputText id="userName" label="Användarnamn"
+	<p:messages id="messages"  autoUpdate="true" />
+	<h:message value="#{userBean.returnValue}" />
+	<h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
+		<p:outputLabel for="userName" value="Username:"></p:outputLabel>
+		<p:inputText id="userName" label="username"
 			value="#{userBean.userName}" required="true"
-			required-message="Du måste ange ett användarnamn!"
-			validator-message="Användarnamn måste vara mellan 2-30 tecken!"
 			autocomplete="off">
 			<f:validateLength minimum="2" maximum="30" />
 		</p:inputText>
-		<br />
-		<p:outputLabel for="password" value="password:"></p:outputLabel>
-		<p:inputText id="password" label="Lösenord"
+		
+		<p:outputLabel for="password" value="Password:"></p:outputLabel>
+		<p:password id="password" label="Password"
 			value="#{userBean.password}" required="true"
-			required-message="Du måste ange ett lösenord!"
-			validator-message="Lösenord måste vara mellan 2-30 tecken!"
-			autocomplete="off">
+			autocomplete="off" feedback="true">
 			<f:validateLength minimum="2" maximum="30" />
+		</p:password>
+		
+		<p:outputLabel for="otp" value="Key:"></p:outputLabel>
+		<p:inputText id="otp" label="Key"
+			value="#{userBean.otp}"
+			autocomplete="off">
 		</p:inputText>
-
+		
 		<p:commandButton action="#{userBean.addUser()}" value="Spara"></p:commandButton>
+		<br />
+		
+		</h:panelGrid>
 	</h:form>
 </h:body>
 </html>

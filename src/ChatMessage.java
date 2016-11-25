@@ -4,7 +4,7 @@ public class ChatMessage {
 	private String message;
 	private String sender;
 	private Date received;
-	
+	private String users;
 	
 	
 	public String getMessage() {
@@ -25,9 +25,15 @@ public class ChatMessage {
 	public void setReceived(Date received) {
 		this.received = received;
 	}
+	public String getUsers() {
+		return users;
+	}
+	public void setUsers(String users) {
+		this.users = users;
+	}
 	@Override
 	public String toString(){
-		return "ChatMessage [message=" + message + ", sender=" + sender + ", recieved=" + received + "]";
+		return "ChatMessage [message=" + message + ", sender=" + sender + ", recieved=" + received + ", users=" + users + "]";
 	}
 
 }

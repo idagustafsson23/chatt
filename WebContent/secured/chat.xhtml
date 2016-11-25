@@ -18,6 +18,7 @@
 	var $nickName;
 	var $message;
 	var $chatWindow;
+	var $userWindow;
 	
 	function onMessageReceived(evt) {
 		console.log("msgRecieved");
@@ -25,7 +26,10 @@
 		var $messageLine = $('<tr><td class="received">' + msg.received
 				+ '</td><td class="user label label-info">' + msg.sender
 				+ '</td><td class="message badge">' + msg.message
-				+ '</td></tr>');
+				+ '</td></tr>'); 
+		var $users = $('<tr><td>' + msg.users + '</td></tr>');
+		console.log(msg.users);
+		$userWindow.append($users);
 		$chatWindow.append($messageLine);
 	}
 	
@@ -47,6 +51,7 @@
 		console.log("Användare: " + $nickName.val());
 		$message = $('#message');
 		$chatWindow = $('#response');
+		$userWindow = $('#userWindow');
 		
 		//från connectToChatServer
 		console.log("ansluten!");
@@ -85,6 +90,7 @@
 			</div>
 		</div>
 		<div class="ui-g-4">
+			<table id="userWindow"></table>
 			<!-- lista av medlemmar -->
 		</div>
 	</div>

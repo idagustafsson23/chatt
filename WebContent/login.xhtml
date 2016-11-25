@@ -18,12 +18,12 @@
 			<p:inputText id="userNameField" value="#{loginBean.userName}"></p:inputText>
 			
 			<p:outputLabel for="passwordField" value="Password"></p:outputLabel>
-			<p:inputText id="passwordField" value="#{loginBean.password}"></p:inputText>
-			<!-- fysisk nyckel
-			<h:outputLabel value="Key: " > </h:outputLabel>
-			<h:inputText value="#{loginBean.textField}" ></h:inputText> 
+			<p:password id="passwordField" value="#{loginBean.password}"></p:password>
 			
-			-->
+			<p:outputLabel value="Key: " > </p:outputLabel>
+			<p:inputText value="#{loginBean.otp}" ></p:inputText> 
+			
+			
 			<h:commandButton action="#{loginBean.login}" value="Login" ></h:commandButton>
 			</h:panelGrid>
 		</h:form>
