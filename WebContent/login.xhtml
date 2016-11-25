@@ -11,21 +11,27 @@
 		<title>Login</title>
 	</h:head>
 	<h:body>
+	<h1>LOGIN</h1>
 		<h:form>
+		<p:messages id="messages"  autoUpdate="true" />
+		<p:message for="userName"></p:message>
 		 <h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
 			
-			<p:outputLabel for="userNameField" value="Username"></p:outputLabel>
-			<p:inputText id="userNameField" value="#{loginBean.userName}"></p:inputText>
+			<p:outputLabel for="userName" value="Username"></p:outputLabel>
+			<p:inputText id="userName" value="#{loginBean.userName}" required="true"></p:inputText>
 			
 			<p:outputLabel for="passwordField" value="Password"></p:outputLabel>
-			<p:password id="passwordField" value="#{loginBean.password}"></p:password>
+			<p:password id="passwordField" value="#{loginBean.password}" required="true"></p:password>
 			
 			<p:outputLabel value="Key: " > </p:outputLabel>
 			<p:inputText value="#{loginBean.otp}" ></p:inputText> 
 			
 			
-			<h:commandButton action="#{loginBean.login}" value="Login" ></h:commandButton>
+			<p:commandButton action="#{loginBean.login()}" value="Login" ></p:commandButton>
 			</h:panelGrid>
+		</h:form>
+		<h:form>
+			<p:commandButton action="#{loginBean.goToCreat()}" value="Register New User"></p:commandButton>
 		</h:form>
 	</h:body>
 </html>

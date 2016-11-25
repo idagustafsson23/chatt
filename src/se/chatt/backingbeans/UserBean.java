@@ -6,6 +6,11 @@ import java.security.spec.InvalidKeySpecException;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 
 import com.yubico.client.v2.VerificationResponse;
@@ -21,42 +26,57 @@ import se.chatt.hashing.PasswordHashing;
 @Named(value = "userBean")
 @RequestScoped
 public class UserBean {
+
 	private String userName;
 	private String password;
 	private String otp;
 	private User user;
-	private String returnValue = "";
 
 	@EJB
 	private UserEJBLocal userEJB;
 
 	public String addUser() {
 		user = new User();
-		if (userEJB.getUserByUserName(userName) != null) {
-			returnValue = "Username already exsists!";
-		} else {
-			try {
-				if(YubicoClient.isValidOTPFormat(otp)){
-					VerificationResponse response = Yubico.getClient().verify(otp);
-			        if (response.isOk()) {
-			            String yubikeyId = YubicoClient.getPublicId(otp);
-			            user.setKeyId(yubikeyId);
-			            System.out.println("Nyckel registrerad!");
-			        }
-				}else if(!otp.equals("")){
-					returnValue = "Invalid key!";
-					System.out.println("Ogiltig nyckel!!!");
-					return "";
+		try {
+			if (YubicoClient.isValidOTPFormat(otp)) {
+				VerificationResponse response = Yubico.getClient().verify(otp);
+				if (response.isOk()) {
+					String yubikeyId = YubicoClient.getPublicId(otp);
+					user.setKeyId(yubikeyId);
+					System.out.println("Nyckel registrerad!");
 				}
-				user = PasswordHashing.generatePasswordHash(password, user);
-				user.setUserName(userName);
-				userEJB.saveUser(user);
-				returnValue = "User has been registerd!";
-			} catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException | YubicoVerificationException | YubicoValidationFailure e) {
-				e.printStackTrace();
-			} 
+			}
+			user = PasswordHashing.generatePasswordHash(password, user);
+			user.setUserName(userName);
+			userEJB.saveUser(user);
+		} catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException
+				| YubicoVerificationException | YubicoValidationFailure e) {
+			e.printStackTrace();
 		}
-		return "";
+
+		return "/login.xhtml?faces-redirect=true";
+	}
+	
+	public String goToLogin(){
+		return "/login.xhtml?faces-redirect=true";
+	}
+
+	public void validateUserName(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		String userName = (String) value;
+		if (userEJB.getUserByUserName(userName) != null) {
+			((UIInput) component).setValid(false);
+			FacesMessage message = new FacesMessage("Username already exsists!");
+			context.addMessage(component.getClientId(context), message);
+		}
+	}
+
+	public void validateKey(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		String otp = (String) value;
+		if (!YubicoClient.isValidOTPFormat(otp) && !otp.equals("")) {
+			((UIInput) component).setValid(false);
+			FacesMessage message = new FacesMessage("Invalid key!");
+			context.addMessage(component.getClientId(context), message);
+		}
 	}
 
 	public String getUserName() {
@@ -89,14 +109,6 @@ public class UserBean {
 
 	public void setOtp(String otp) {
 		this.otp = otp;
-	}
-	
-	public String getReturnValue() {
-		return returnValue;
-	}
-	
-	public void setReturnValue(String returnValue) {
-		this.returnValue = returnValue;
 	}
 
 }

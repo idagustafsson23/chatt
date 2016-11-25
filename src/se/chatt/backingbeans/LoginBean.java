@@ -6,6 +6,8 @@ import java.security.spec.InvalidKeySpecException;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import com.yubico.client.v2.VerificationResponse;
@@ -61,13 +63,19 @@ public class LoginBean implements Serializable {
 
 		}
 		if (!isLoggedIn) {
-			// fel lösen eller användarnamn
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage message = new FacesMessage("Wrong username, password or invalid key!");
+			context.addMessage("userName", message);
 		}else{
 			loggedInUser = userFromDB;
 			return "/secured/chat.xhtml?faces-redirect=true";
 		}
 
 		return "";
+	}
+	
+	public String goToCreat(){
+		return "/create-user.xhtml?faces-redirect=true";
 	}
 
 	public String getUserName() {

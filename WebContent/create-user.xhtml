@@ -11,34 +11,38 @@
 	<title>Register User</title>
 </h:head>
 <h:body>
+<h1>REGISTER USER</h1>
 	<h:form>
-	<p:messages id="messages"  autoUpdate="true" />
-	<h:message value="#{userBean.returnValue}" />
-	<h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
-		<p:outputLabel for="userName" value="Username:"></p:outputLabel>
-		<p:inputText id="userName" label="username"
-			value="#{userBean.userName}" required="true"
-			autocomplete="off">
-			<f:validateLength minimum="2" maximum="30" />
-		</p:inputText>
-		
-		<p:outputLabel for="password" value="Password:"></p:outputLabel>
-		<p:password id="password" label="Password"
-			value="#{userBean.password}" required="true"
-			autocomplete="off" feedback="true">
-			<f:validateLength minimum="2" maximum="30" />
-		</p:password>
-		
-		<p:outputLabel for="otp" value="Key:"></p:outputLabel>
-		<p:inputText id="otp" label="Key"
-			value="#{userBean.otp}"
-			autocomplete="off">
-		</p:inputText>
-		
-		<p:commandButton action="#{userBean.addUser()}" value="Spara"></p:commandButton>
-		<br />
-		
+		<p:messages id="messages" autoUpdate="true" />
+		<p:message for="userName"></p:message>
+		<p:message for="otp"></p:message>
+		<h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
+			<p:outputLabel for="userName" value="Username:"></p:outputLabel>
+			<p:inputText id="userName" label="username"
+				value="#{userBean.userName}" required="true" autocomplete="off"
+				validator="#{userBean.validateUserName}">
+				<f:validateLength minimum="2" maximum="30" />
+			</p:inputText>
+
+
+			<p:outputLabel for="password" value="Password:"></p:outputLabel>
+			<p:password id="password" label="Password"
+				value="#{userBean.password}" required="true" autocomplete="off"
+				feedback="true">
+				<f:validateLength minimum="2" maximum="30" />
+			</p:password>
+
+			<p:outputLabel for="otp" value="Key:"></p:outputLabel>
+			<p:inputText id="otp" label="Key" value="#{userBean.otp}"
+				autocomplete="off" validator="#{userBean.validateKey}">
+			</p:inputText>
+
+			<p:commandButton action="#{userBean.addUser()}" value="Save"></p:commandButton>
+
 		</h:panelGrid>
+	</h:form>
+	<h:form>
+		<p:commandButton action="#{userBean.goToLogin()}" value="Go To Login"></p:commandButton>
 	</h:form>
 </h:body>
 </html>
