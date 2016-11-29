@@ -11,65 +11,7 @@
 	<h:outputStylesheet name="grid/grid.css" library="primefaces" />
 	<title>Chat</title>
 	
-	<script type="text/javascript" language="javascript">
-	var wsocket;
-	var serviceLocation = "ws://localhost:8080/chatt/chat/";
-	
-	var $nickName;
-	var $message;
-	var $chatWindow;
-	var $userWindow;
-	
-	function onMessageReceived(evt) {
-		console.log("msgRecieved");
-		var msg = JSON.parse(evt.data); // native API
-		var $messageLine = $('<tr><td class="received">' + msg.received
-				+ '</td><td class="user label label-info">' + msg.sender
-				+ '</td><td class="message badge">' + msg.message
-				+ '</td></tr>'); 
-		var $users = $('<tr><td>' + msg.users + '</td></tr>');
-		console.log(msg.users);
-		$userWindow.append($users);
-		$chatWindow.append($messageLine);
-	}
-	
-	function sendMessage() {
-		var msg = '{"message":"' + $message.val() + '", "sender":"'
-				+ $nickName.val() + '", "received":""}';
-		wsocket.send(msg);
-		$message.val('').focus();
-	}
-	
-	function sendTest() {
-		console.log("form skickat");
-		sendMessage();
-	}
-	
-	$(document).ready(function() {
-		console.log("document.ready körs iaf...");
-		$nickName = $('#userName');
-		console.log("Användare: " + $nickName.val());
-		$message = $('#message');
-		$chatWindow = $('#response');
-		$userWindow = $('#userWindow');
-		
-		//från connectToChatServer
-		console.log("ansluten!");
-		wsocket = new WebSocket(serviceLocation);
-		wsocket.onmessage = onMessageReceived;
-		
-	});
-	$('#btnConnect').click(function(){
-		console.log("klick!");
-	});
-	
-	$('#do-chat').submit(function(evt) {
-		console.log("form skickat");
-		evt.preventDefault();
-		sendMessage();
-	});
-	
-	</script>
+	<script src="js/script.js"></script>
 </h:head>
 <h:body>
 	<div class="ui-g">
@@ -83,15 +25,18 @@
 					<form id="do-chat" onsubmit="return false">
 						
 						<p:inputText id="message" />
-						<button id="btnTest" onclick="sendTest()">hej!</button>
-						<input type="submit" value="Send" />
+						<button id="btnSend" onclick="sendMessage()">SEND</button>
+						
 					</form>
 				</div>
 			</div>
 		</div>
 		<div class="ui-g-4">
-			<table id="userWindow"></table>
+			<div id="users"></div>
 			<!-- lista av medlemmar -->
+			<h:form>
+				<p:commandButton action="#{chatBean.logout()}" value="Logout"></p:commandButton>
+			</h:form>
 		</div>
 	</div>
 	<h:inputHidden id="userName" value="#{loginBean.loggedInUser.userName}"></h:inputHidden>

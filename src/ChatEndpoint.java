@@ -16,7 +16,6 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import org.primefaces.expression.impl.JQuerySelectorExpressionResolver;
 import org.primefaces.json.JSONArray;
 
 import se.chatt.backingbeans.LoginBean;
