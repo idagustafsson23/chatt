@@ -48,7 +48,6 @@ public class LoginBean implements Serializable {
 						if (response.isOk()) {
 							String yubikeyId = YubicoClient.getPublicId(otp);
 							if (userFromDB.getKeyId().equals(yubikeyId)) {
-								System.out.println("Sussec!!!!!");
 								isLoggedIn = true;
 								
 							}

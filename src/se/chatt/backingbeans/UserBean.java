@@ -63,11 +63,15 @@ public class UserBean {
 
 	public void validateUserName(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		String userName = (String) value;
-		if (userEJB.getUserByUserName(userName) != null) {
+		if(!userName.matches("[A-Za-z0-9]+")){
+			((UIInput) component).setValid(false);
+			FacesMessage message = new FacesMessage("Username can only containe letters and numbers!");
+			context.addMessage(component.getClientId(context), message);
+		}else if (userEJB.getUserByUserName(userName) != null) {
 			((UIInput) component).setValid(false);
 			FacesMessage message = new FacesMessage("Username already exsists!");
 			context.addMessage(component.getClientId(context), message);
-		}
+		} 
 	}
 
 	public void validateKey(FacesContext context, UIComponent component, Object value) throws ValidatorException {

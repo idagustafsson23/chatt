@@ -1,3 +1,4 @@
+import java.security.PublicKey;
 import java.util.Date;
 
 public class ChatMessage {
@@ -5,7 +6,7 @@ public class ChatMessage {
 	private String sender;
 	private Date received;
 	private String users;
-	
+	private PublicKey decodeKey;	
 	
 	public String getMessage() {
 		return message;
@@ -30,6 +31,12 @@ public class ChatMessage {
 	}
 	public void setUsers(String users) {
 		this.users = users;
+	}
+	public PublicKey getDecodeKey() {
+		return decodeKey;
+	}
+	public void setDecodeKey(PublicKey decodeKey) {
+		this.decodeKey = decodeKey;
 	}
 	@Override
 	public String toString(){
