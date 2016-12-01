@@ -72,7 +72,7 @@ public class ChatMessageDecoder implements Decoder.Text<ChatMessage> {
 	public static byte[] encrypt(String text, PublicKey key) {
 	    byte[] cipherText = null;
 	    try {
-	      final Cipher cipher = Cipher.getInstance("RSA");
+	      Cipher cipher = Cipher.getInstance("RSA");
 	      cipher.init(Cipher.ENCRYPT_MODE, key);
 	      cipherText = cipher.doFinal(text.getBytes());
 	    } catch (Exception e) {

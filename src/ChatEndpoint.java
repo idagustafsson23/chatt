@@ -61,22 +61,24 @@ public class ChatEndpoint {
 		msg.setSender("SYSTEM");
 		msg.setReceived(new Date());
 		sendMessageToAll(msg);
-
 	}
 
 	@OnMessage
 	public void onMessage(final Session session, final ChatMessage chatMessage) {
 		sendMessageToAll(chatMessage);
 	}
-
-	private void sendMessageToAll(ChatMessage message) {
+	
+	private String addUsersToMessage(){
 		List<String> users = new ArrayList<String>();
 		for (Session s : sessions) {
 			users.add((String) s.getUserProperties().get("userName"));
 		}
 		JSONArray array = new JSONArray(users);
-		String json = array.toString();
-		message.setUsers(json);
+		return array.toString();
+	}
+
+	private void sendMessageToAll(ChatMessage message) {
+		message.setUsers(addUsersToMessage());
 		ChatMessage chatMessage = new ChatMessage();
 		for(Session s : sessions) {
 			if(message.getDecodeKey() != null && message.getDecodeKey().equals(s.getUserProperties().get("publicKey"))){
