@@ -1,0 +1,65 @@
+__Chatt__
+
+Somewhat secure group chat with encrypted PMs
+
+_Code Sample_
+
+_Getting Started_
+Before joining the chatroom you need to register an account. this is done by navigating to [this should not be the link] localhost:8080/chatt/create-user.xhtml
+Fill in desired username and password, marvel at the complete lack of responsiveness
+For extra security a user can choose to register account with a Yubikey(www.yubico.com) - this step is optional
+
+A yubikey provides extra account security by forcing a second verification.
+The key generates a randomized one-time password. The application controls that it is the same key that was used for creating the account and 
+yubico controlls that the key is valid and has not been used before.
+
+if(userFromDB.getKeyId() != null && YubicoClient.isValidOTPFormat(generatedKey)){	//check if the key has the right format
+	response = Yubico.getClient().verify(generatedKey);				//check if key is valid/not used				
+	if (response.isOk()) {
+		String yubikeyId = YubicoClient.getPublicId(GeneratedKey);			
+		if (userFromDB.getKeyId().equals(yubikeyId)) {				//Check if same key as used for registration
+			//Login
+		}
+	}
+}
+
+if registration is sucessfull, you will be redirected to the login page (localhost:8080/chatt/login.xhtml)
+Enter your account credentials and press enter (or click login)
+
+Type your message in the first text box and press send(or enter) to send a message to all connected users
+
+to send a encrypted private message add the recipients username in the second text box (labeled "To:"). As before click send or press enter to send
+the encrypted message will be displayed for all users but only the inteded recipient will see the decrypted message
+
+
+_Prereqisites_
+Any IDE
+Glassfish 4.x
+SQL
+
+
+_installation_
+Note: i really hope this changes until presentation...
+create dynamic web project
+convert to maven
+clone project from github (https://github.com/idagustafsson23/chatt.git) to separate folder
+copy content of cloned folder to the project, overwrite all
+create SQL database named chatt_db
+	create table named user
+		structure:
+		id 		int(11)		auto_increment + primary_key
+		user_name	varchar(45)
+		password	varchar(166)
+		key_id		int(11)
+		salt		varchar(45)
+		iterations	int(11)
+
+set up glassfish to the DB
+run project on glassfish
+go to localhost:8080/chatt/create-user.xhtml
+
+
+_Contributors_
+Ida Gustafsson
+Erik Lillehagen
+stackoverflow.com
