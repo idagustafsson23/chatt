@@ -8,9 +8,9 @@ var $chatWindow;
 
 function onMessageReceived(evt) {
 	var msg = JSON.parse(evt.data); // native API
-	var $messageLine = $('<tr><td class="received">' + msg.received
-			+ '</td><td class="user label label-info">' + msg.sender
-			+ '</td><td class="message badge">' + msg.message + '</td></tr>');
+	var splitMsg = addNewlines(msg.message);
+	var $messageLine = $('<br><div class="message">' + msg.received
+			+ '<br>' + msg.sender + ' said: ' + splitMsg + '</div>');
 	console.log(msg.users);
 	var splitUsers = msg.users.split(/[^0-9a-zA-Z- ]/);
 	var stringUsers = "";
@@ -21,7 +21,18 @@ function onMessageReceived(evt) {
 	}
 	document.getElementById("users").innerHTML = stringUsers;
 	$chatWindow.append($messageLine);
+	
+	$('#response').animate({scrollTop: $('#response').prop("scrollHeight")}, 500);
 }
+
+function addNewlines(str) {
+	  var result = '';
+	  while (str.length > 0) {
+	    result += str.substring(0, 100) + '\n';
+	    str = str.substring(100);
+	  }
+	  return result;
+	}
 
 function sendMessage() {
 	var msg = '{"message":"' + $message.val() + '", "sender":"'

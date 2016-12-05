@@ -1,0 +1,27 @@
+
+/*Chat components*/
+#chatDiv{
+	background-color: MintCream;
+	font-family: "roboto";	
+}
+
+#response{
+	height: 90vh;
+	overflow-y: scroll;
+}
+
+#textfieldDiv{
+	background-color: LightSkyBlue;
+	font-family: "roboto";
+}
+
+.controls{
+	height: 5vh;
+}
+
+.message{
+	background-color: LightSkyBlue;
+	padding: 0.5em;
+	margin-right: 2em;
+	border-radius: 0.5em;
+}

@@ -8,23 +8,24 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-	<h:outputStylesheet name="grid/grid.css" library="primefaces" />
 	<title>Chat</title>
-	
-	<script src="js/script.js"></script>
+	<h:outputStylesheet name="grid/grid.css" library="primefaces" />
+	<h:outputStylesheet library="css" name="style.css"  />
+	<h:outputScript library="js" name="script.js"></h:outputScript>
 </h:head>
 <h:body>
 	<div class="ui-g">
 		<div class="ui-g-8 ui-g-nopad">
-			<div class="ui-g-12" style="background-color: green">
+			<div class="ui-g-12" id="chatDiv">
 				<!-- Chatten! -->
-				<table id="response"></table>
+				<!-- <table id="response"></table> -->
+				<div id="response"/>
 			</div>
-			<div class="ui-g-12" style="background-color: blue">
+			<div class="ui-g-12" id="textfieldDiv">
 				<div class="controls">
 					<form id="do-chat" onsubmit="return false">
 						
-						<p:inputText id="message" />
+						<p:inputText id="message" autocomplete="off" />
 						<p:outputLabel for="decodeKey" value="To:"></p:outputLabel>
 						<p:inputText id="decodeKey"></p:inputText>
 						<button id="btnSend" onclick="sendMessage()">SEND</button>
@@ -34,6 +35,7 @@
 			</div>
 		</div>
 		<div class="ui-g-4">
+			<p:outputLabel value="Online:"></p:outputLabel>
 			<div id="users"></div>
 			<!-- lista av medlemmar -->
 			<h:form>
