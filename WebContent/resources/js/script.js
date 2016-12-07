@@ -1,5 +1,5 @@
 var wsocket;
-var serviceLocation = "ws://localhost:8080/chatt/chat/";
+var serviceLocation = "wss://localhost:8181/chatt/chat/";
 
 var $nickName;
 var $message;

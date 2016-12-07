@@ -1,27 +1,67 @@
 
 /*Chat components*/
-#chatDiv{
-	background-color: MintCream;
-	font-family: "roboto";	
+#mainDiv {
+	font-family: "Arial";/*todo:pick font*/
+	
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
 }
-
-#response{
-	height: 90vh;
-	overflow-y: scroll;
-}
-
-#textfieldDiv{
-	background-color: LightSkyBlue;
-	font-family: "roboto";
-}
-
-.controls{
-	height: 5vh;
-}
-
+/*chat display*/
 .message{
 	background-color: LightSkyBlue;
 	padding: 0.5em;
-	margin-right: 2em;
+	margin-right: 0.5em;
 	border-radius: 0.5em;
+	box-shadow: 5px 5px 3px #d3d3d3;
+}
+
+#chatDiv{
+	background-color: MintCream;
+	
+}
+
+#response{
+	overflow-y: scroll;
+	margin-bottom: 1vh;
+	margin-top: 1vh; 
+	position: relative;
+	height: 85vh;
+	
+}
+/*--------------------*/
+
+/*chat controls*/
+
+.controls{
+	background-color: LightSkyBlue;
+	margin-left: -0.5em;
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	
+}
+#message{
+	margin:0.5em;
+	width: 70vw;
+}
+
+#decodeKey{
+	margin:0.5em;
+}
+
+#btnSend {
+	background-color: MintCream;
+	border: none;
+	padding: 1vh 3vw;
+	font-family: "Arial";
+	font-weight: bold;
+}
+/*--------------------*/
+
+/*user list*/
+#users {
+
 }

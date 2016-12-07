@@ -14,36 +14,35 @@
 	<h:outputScript library="js" name="script.js"></h:outputScript>
 </h:head>
 <h:body>
-	<div class="ui-g">
-		<div class="ui-g-8 ui-g-nopad">
-			<div class="ui-g-12" id="chatDiv">
-				<!-- Chatten! -->
-				<!-- <table id="response"></table> -->
-				<div id="response"/>
-			</div>
-			<div class="ui-g-12" id="textfieldDiv">
-				<div class="controls">
-					<form id="do-chat" onsubmit="return false">
-						
-						<p:inputText id="message" autocomplete="off" />
-						<p:outputLabel for="decodeKey" value="To:"></p:outputLabel>
-						<p:inputText id="decodeKey"></p:inputText>
-						<button id="btnSend" onclick="sendMessage()">SEND</button>
-						
-					</form>
+	<div id="mainDiv">
+		<div class="ui-g">
+			<div class="ui-g-9 ui-g-nopad">
+				<div class="ui-g-12" id="chatDiv">
+					<!-- Chatten! -->
+					<!-- <table id="response"></table> -->
+					<div id="response"/>
+				</div>
+				<div class="ui-g-12" id="textfieldDiv">
+					<div class="controls">
+						<form id="do-chat" onsubmit="return false">
+							<p:inputText id="message" autocomplete="off" />
+							<p:outputLabel for="decodeKey" value="To:"></p:outputLabel>
+							<p:inputText id="decodeKey"></p:inputText>
+							<button id="btnSend" onclick="sendMessage()">SEND</button>
+						</form>
+					</div>
 				</div>
 			</div>
+			<div class="ui-g-3">
+				<p:outputLabel value="Online:"></p:outputLabel>
+				<div id="users"></div>
+				<!-- lista av medlemmar -->
+				<h:form>
+					<p:commandButton action="#{chatBean.logout()}" value="Logout"></p:commandButton>
+				</h:form>
+			</div>
 		</div>
-		<div class="ui-g-4">
-			<p:outputLabel value="Online:"></p:outputLabel>
-			<div id="users"></div>
-			<!-- lista av medlemmar -->
-			<h:form>
-				<p:commandButton action="#{chatBean.logout()}" value="Logout"></p:commandButton>
-			</h:form>
-		</div>
+		<h:inputHidden id="userName" value="#{loginBean.loggedInUser.userName}"></h:inputHidden>
 	</div>
-	<h:inputHidden id="userName" value="#{loginBean.loggedInUser.userName}"></h:inputHidden>
-
 </h:body>
 </html>
