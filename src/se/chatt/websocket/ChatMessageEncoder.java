@@ -1,7 +1,10 @@
+package se.chatt.websocket;
 import javax.json.Json;
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
+
+import se.chatt.DAO.ChatMessage;
 
 public class ChatMessageEncoder implements Encoder.Text<ChatMessage>{
 

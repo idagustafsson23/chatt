@@ -1,3 +1,4 @@
+package se.chatt.DAO;
 import java.security.PublicKey;
 import java.util.Date;
 

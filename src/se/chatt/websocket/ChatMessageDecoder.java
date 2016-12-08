@@ -1,3 +1,4 @@
+package se.chatt.websocket;
 import java.io.StringReader;
 import java.math.BigInteger;
 import java.security.PublicKey;
@@ -11,6 +12,9 @@ import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 import javax.websocket.Session;
+
+import se.chatt.DAO.ChatMessage;
+import se.chatt.hashing.Encryption;
 
 
 
@@ -40,7 +44,7 @@ public class ChatMessageDecoder implements Decoder.Text<ChatMessage> {
 		String message = obj.getString("message");
 		PublicKey key = getPublicKey(user);
 		if(key != null && !message.equals("")){
-			message = toHex(encrypt(message, key));
+			message = Encryption.toHex(Encryption.encrypt(message, key));
 			chatMessage.setDecodeKey(key);
 		}else if(!user.equals("") || message.equals("")){
 			return null;
@@ -69,27 +73,6 @@ public class ChatMessageDecoder implements Decoder.Text<ChatMessage> {
 		return true;
 	}
 	
-	public static byte[] encrypt(String text, PublicKey key) {
-	    byte[] cipherText = null;
-	    try {
-	      Cipher cipher = Cipher.getInstance("RSA");
-	      cipher.init(Cipher.ENCRYPT_MODE, key);
-	      cipherText = cipher.doFinal(text.getBytes());
-	    } catch (Exception e) {
-	      e.printStackTrace();
-	    }
-	    return cipherText;
-	  }
 	
-	private static String toHex(byte[] array) {
-		BigInteger bi = new BigInteger(1, array);
-		String hex = bi.toString(16);
-		int paddingLength = (array.length * 2) - hex.length();
-		if (paddingLength > 0) {
-			return String.format("%0" + paddingLength + "d", 0) + hex;
-		} else {
-			return hex;
-		}
-	}
 
 }

@@ -1,3 +1,4 @@
+package se.chatt.websocket;
 import java.io.IOException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -24,7 +25,9 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.primefaces.json.JSONArray;
 
+import se.chatt.DAO.ChatMessage;
 import se.chatt.backingbeans.LoginBean;
+import se.chatt.hashing.Encryption;
 
 @ServerEndpoint(value = "/chat/", encoders = ChatMessageEncoder.class, decoders = ChatMessageDecoder.class)
 public class ChatEndpoint {
@@ -82,7 +85,7 @@ public class ChatEndpoint {
 		ChatMessage chatMessage = new ChatMessage();
 		for(Session s : sessions) {
 			if(message.getDecodeKey() != null && message.getDecodeKey().equals(s.getUserProperties().get("publicKey"))){
-				String msg = decrypt(fromHex(message.getMessage()), (PrivateKey) s.getUserProperties().get("privateKey"));
+				String msg = Encryption.decrypt(Encryption.fromHex(message.getMessage()), (PrivateKey) s.getUserProperties().get("privateKey"));
 				chatMessage.setReceived(message.getReceived());
 				chatMessage.setSender(message.getSender());
 				chatMessage.setUsers(message.getUsers());
@@ -120,24 +123,5 @@ public class ChatEndpoint {
 		return sessions;
 	}
 	
-	public static String decrypt(byte[] text, PrivateKey key) {
-	    byte[] dectyptedText = null;
-	    try {
-	      Cipher cipher = Cipher.getInstance("RSA");
-	      cipher.init(Cipher.DECRYPT_MODE, key);
-	      dectyptedText = cipher.doFinal(text);
-	    } catch (Exception ex) {
-	      ex.printStackTrace();
-	    }
-
-	    return new String(dectyptedText);
-	  }
 	
-	private static byte[] fromHex(String hex) {
-		byte[] bytes = new byte[hex.length() / 2];
-		for (int i = 0; i < bytes.length; i++) {
-			bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
-		}
-		return bytes;
-	}
 }
